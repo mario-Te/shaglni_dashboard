@@ -1,0 +1,122 @@
+<app-default-table [title]="title" [headers]="headers" [rows]="tableRows" (edit)="editRow($event)"
+    (delete)="deleteRow($event)" (showAddModal)="showModal()" *ngIf="tableRows.length>0">
+</app-default-table>
+<nav *ngIf="totalPages > 1">
+    <ul class="pagination d-flex justify-content-center">
+        <li class="page-item" [class.disabled]="current_job_page === 1">
+            <a class="page-link" (click)="goToPage(1)" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === 1">
+            <a class="page-link" (click)="goToPage(current_job_page - 1)" aria-label="Previous">
+                <span aria-hidden="true">&lsaquo;</span>
+            </a>
+        </li>
+        <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === current_job_page">
+            <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === totalPages">
+            <a class="page-link" (click)="goToPage(current_job_page + 1)" aria-label="Next">
+                <span aria-hidden="true">&rsaquo;</span>
+            </a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === totalPages">
+            <a class="page-link" (click)="goToPage(totalPages)" aria-label="Last">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<div id="modalTarget">
+    <ejs-dialog id="modalDialog" #modalDialog (overlayClick)="overlayClick()" [isModal]="true" [target]="target"
+        [width]="width" [visible]="false">
+        <ng-template #header>
+            <span class="section-title" *ngIf="modalType === 1">{{
+                "add_user" | translate
+                }}</span>
+            <span class="section-title" *ngIf="modalType === 2">{{
+                "update_user" | translate
+                }}</span>
+
+
+        </ng-template>
+        <ng-template #content>
+            <div *ngIf="modalType==1">
+                <form (ngSubmit)="onSubmit(registrationForm)" #registrationForm="ngForm">
+                    <div class="mb-3">
+                        <label class="form-label">Email:</label>
+                        <input type="email" name="email" ngModel required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password:</label>
+                        <input type="password" minlength="8" name="password" ngModel required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">First Name:</label>
+                        <input type="text" name="firstName" ngModel required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Last Name:</label>
+                        <input type="text" name="lastName" ngModel required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Username:</label>
+                        <input type="text" name="username" ngModel required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Birthdate:</label>
+                        <input type="date" name="birthdate" ngModel required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" [disabled]="registrationForm.invalid"
+                            class="btn btn-secondary">Register</button>
+
+                    </div>
+                </form>
+
+            </div>
+
+            <div *ngIf="modalType==2 && updated_user!=undefined">
+                <form (ngSubmit)="onUpdate(UpdateForm)" #UpdateForm="ngForm">
+                    <div class="mb-3">
+                        <label class="form-label">Email:</label>
+                        <input type="email" name="email" [(ngModel)]="updated_user.email" required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password:</label>
+                        <input type="password" minlength="8" name="password" [(ngModel)]="updated_user.password"
+                            required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">First Name:</label>
+                        <input type="text" name="firstName" [(ngModel)]="updated_user.firstName" required
+                            class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Last Name:</label>
+                        <input type="text" name="lastName" [(ngModel)]="updated_user.lastName" required
+                            class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Username:</label>
+                        <input type="text" name="username" [(ngModel)]="updated_user.userName" required
+                            class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Birthdate:</label>
+                        <input type="date" name="birthdate" [(ngModel)]="updated_user.birthdate" required
+                            class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" [disabled]="UpdateForm.invalid" class="btn btn-secondary">Update</button>
+
+                    </div>
+                </form>
+
+            </div>
+
+
+        </ng-template>
+    </ejs-dialog>
+</div>

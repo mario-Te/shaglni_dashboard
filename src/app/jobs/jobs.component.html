@@ -1,0 +1,114 @@
+<app-default-table [title]="title" [headers]="headers" [rows]="tableRows" (edit)="editRow($event)"
+    (delete)="deleteRow($event)" (showAddModal)="showModal()" *ngIf="tableRows.length>0"></app-default-table>
+<nav *ngIf="totalPages > 1">
+    <ul class="pagination d-flex justify-content-center">
+        <li class="page-item" [class.disabled]="current_job_page === 1">
+            <a class="page-link" (click)="goToPage(1)" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === 1">
+            <a class="page-link" (click)="goToPage(current_job_page - 1)" aria-label="Previous">
+                <span aria-hidden="true">&lsaquo;</span>
+            </a>
+        </li>
+        <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === current_job_page">
+            <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === totalPages">
+            <a class="page-link" (click)="goToPage(current_job_page + 1)" aria-label="Next">
+                <span aria-hidden="true">&rsaquo;</span>
+            </a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === totalPages">
+            <a class="page-link" (click)="goToPage(totalPages)" aria-label="Last">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<div id="modalTarget">
+    <ejs-dialog id="modalDialog" #modalDialog (overlayClick)="overlayClick()" [isModal]="true" [target]="target"
+        [width]="width" [visible]="false">
+        <ng-template #header>
+            <span class="section-title" *ngIf="modalType === 1">{{
+                "add_job" | translate
+                }}</span>
+        </ng-template>
+        <ng-template #content>
+            <div *ngIf="modalType ===1">
+                <form #ngForm="ngForm" (ngSubmit)="submitAddJob(ngForm)">
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">{{'job_title'|translate}}</label>
+                            <input class="form-control" name="title" id="title" placeholder="{{'job_title'|translate}}"
+                                ngModel required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">{{'job_description'|translate}}</label>
+                            <textarea type="text" class="form-control" name="description"
+                                placeholder="{{'job_description'|translate}}" id="description" ngModel
+                                required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="company" class="form-label">{{'companies'|translate}}</label>
+                            <ng-select [items]="companies" class="form-control" bindLabel="name" ngModel id="company"
+                                name="company" bindValue="_id"></ng-select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tags" class="form-label">{{'job_tags'|translate}}</label>
+                            <ng-select [items]="tags" class="form-control" [bindLabel]="getNamebyLang()" ngModel
+                                [bindValue]="getNamebyLang()" name="tags" [multiple]="true" bindValue="id"></ng-select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="deadline" class="form-label">{{'job_deadline'|translate}}</label>
+                            <input type="date" class="form-control" name="deadline" id="deadline" ngModel required>
+                        </div>
+
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-secondary">{{"submit"|translate}}</button>
+                    </div>
+                </form>
+            </div>
+            <div *ngIf="modalType ===2 && updated_job!=undefined ">
+                <form #ngForm="ngForm" (ngSubmit)="submitUpdateJob(ngForm)">
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">{{'job_title'|translate}}</label>
+                            <input class="form-control" name="title" id="title" placeholder="{{'job_title'|translate}}"
+                                [(ngModel)]="updated_job.title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">{{'job_description'|translate}}</label>
+                            <textarea type="text" class="form-control" name="description"
+                                placeholder="{{'job_description'|translate}}" id="description"
+                                [(ngModel)]="updated_job.description" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="company" class="form-label">{{'companies'|translate}}</label>
+                            <ng-select [items]="companies" class="form-control" bindLabel="name"
+                                [(ngModel)]="updated_job.company._id" id="company" name="company"
+                                bindValue="_id"></ng-select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tags" class="form-label">{{'job_tags'|translate}}</label>
+                            <ng-select [items]="tags" class="form-control" [bindLabel]="getNamebyLang()"
+                                [(ngModel)]="updated_job.tags" [bindValue]="getNamebyLang()" name="tags"
+                                [multiple]="true" bindValue="id"></ng-select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="deadline" class="form-label">{{'job_deadline'|translate}}</label>
+                            <input type="date" class="form-control" name="deadline" id="deadline"
+                                [(ngModel)]="updated_job.deadline " required>
+                        </div>
+
+                    </div>
+                    <div class=" d-flex justify-content-end">
+                        <button type="submit" class="btn btn-secondary">{{"submit"|translate}}</button>
+                    </div>
+                </form>
+            </div>
+        </ng-template>
+    </ejs-dialog>
+</div>

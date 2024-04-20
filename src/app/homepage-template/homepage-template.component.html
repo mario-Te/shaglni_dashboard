@@ -1,0 +1,28 @@
+<div class="row d-flex">
+    <nav class="col-12 col-md-3 ">
+        <a [routerLink]="['/home/companies']" [routerLinkActive]="'active'">
+            <i class="material-icons">Companies</i>
+            <fa-icon [icon]="fabuilding"></fa-icon>
+        </a>
+        <a [routerLink]="['/home/users']" [routerLinkActive]="'active'">
+            <i class="material-icons">Users</i>
+            <span><fa-icon [icon]="fauser"></fa-icon></span>
+        </a>
+        <a [routerLink]="['/home/jobs']" [routerLinkActive]="'active'">
+            <i class="material-icons">Jobs</i>
+            <fa-icon [icon]="fajob"></fa-icon>
+        </a>
+        <a [routerLink]="['/home/applicants']" [routerLinkActive]="'active'">
+            <i class="material-icons">Applicants</i>
+            <fa-icon [icon]="faprofile"></fa-icon>
+        </a>
+        <a (click)="logout()">
+            <i class="material-icons">Logout</i>
+            <fa-icon [icon]="falogout"></fa-icon>
+        </a>
+    </nav>
+    <div id=body class=" col-12 col-md-9">
+        <div id=content><router-outlet></router-outlet></div>
+    </div>
+
+</div>

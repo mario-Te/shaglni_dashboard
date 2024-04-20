@@ -1,0 +1,72 @@
+<app-default-table [title]="title" [headers]="headers" [rows]="tableRows" (edit)="editRow($event)"
+    (delete)="deleteRow($event)" (showAddModal)="showModal()" *ngIf="tableRows.length>0"></app-default-table>
+<nav *ngIf="totalPages > 1">
+    <ul class="pagination d-flex justify-content-center">
+        <li class="page-item" [class.disabled]="current_job_page === 1">
+            <a class="page-link" (click)="goToPage(1)" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === 1">
+            <a class="page-link" (click)="goToPage(current_job_page - 1)" aria-label="Previous">
+                <span aria-hidden="true">&lsaquo;</span>
+            </a>
+        </li>
+        <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === current_job_page">
+            <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === totalPages">
+            <a class="page-link" (click)="goToPage(current_job_page + 1)" aria-label="Next">
+                <span aria-hidden="true">&rsaquo;</span>
+            </a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === totalPages">
+            <a class="page-link" (click)="goToPage(totalPages)" aria-label="Last">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<div id="modalTarget">
+    <ejs-dialog id="modalDialog" #modalDialog (overlayClick)="overlayClick()" [isModal]="true" [target]="target"
+        [width]="width" [visible]="false">
+        <ng-template #header>
+            <span class="section-title" *ngIf="modalType === 1">{{
+                "update_bio" | translate
+                }}</span>
+            <span class="section-title" *ngIf="modalType === 2">{{
+                "update_skills" | translate
+                }}</span>
+            <span class="section-title" *ngIf="modalType === 3">{{
+                "update_education" | translate
+                }}</span>
+            <span class="section-title" *ngIf="modalType === 4">{{
+                "update_basic_info" | translate
+                }}</span>
+
+        </ng-template>
+        <ng-template #content>
+
+            <div *ngIf="modalType==1">
+                <table class="offset-2">
+                    <thead>
+                        <tr>
+                            <th class="col-4 display-26 text-secondary me-2 font-weight-600">{{"skill"|translate}}</th>
+                            <th class="col-6 display-26 text-secondary me-2 font-weight-600">{{"proficiency"|translate}}
+                            </th>
+                            <th class="col-2">{{""}}</th>
+                        </tr>
+                    </thead>
+
+                </table>
+                <div class="d-flex justify-content-end">
+                    <button type="button" (click)="submitUpdateSkills()"
+                        class="btn btn-secondary">{{"submit"|translate}}</button>
+                </div>
+            </div>
+
+
+
+        </ng-template>
+    </ejs-dialog>
+</div>

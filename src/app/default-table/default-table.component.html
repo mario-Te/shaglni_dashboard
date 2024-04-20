@@ -1,0 +1,34 @@
+<main>
+    <div class="container mt-4">
+        <div class="d-flex wrapper justify-content-between">
+            <h2>{{title|translate}}</h2>
+            <button (click)="showModal()" class="plus-button"><fa-icon [icon]="faplus"></fa-icon></button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <ng-container *ngFor="let item of rows[0] | keyvalue">
+                            <td class="head">{{ item.key }}</td>
+                        </ng-container>
+                        <td class="head">
+                            Actions
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will be dynamically populated -->
+                    <tr *ngFor="let row of rows">
+                        <ng-container *ngFor="let item of row | keyvalue">
+                            <td class="col-2">{{ item.value }}</td>
+                        </ng-container>
+                        <td class="px-2">
+                            <fa-icon class="px-2 text-primary" [icon]="fapencil" (click)="editRow(row)"></fa-icon>
+                            <fa-icon [icon]="fatrash" class="text-danger" (click)="deleteRow(row)"></fa-icon>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,123 @@
+<app-default-table [title]="title" [headers]="headers" [rows]="tableRows" (edit)="editRow($event)"
+    (delete)="deleteRow($event)" (showAddModal)="showModal()" *ngIf="tableRows.length>0"></app-default-table>
+<nav *ngIf="totalPages > 1">
+    <ul class="pagination d-flex justify-content-center">
+        <li class="page-item" [class.disabled]="current_job_page === 1">
+            <a class="page-link" (click)="goToPage(1)" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === 1">
+            <a class="page-link" (click)="goToPage(current_job_page - 1)" aria-label="Previous">
+                <span aria-hidden="true">&lsaquo;</span>
+            </a>
+        </li>
+        <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === current_job_page">
+            <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === totalPages">
+            <a class="page-link" (click)="goToPage(current_job_page + 1)" aria-label="Next">
+                <span aria-hidden="true">&rsaquo;</span>
+            </a>
+        </li>
+        <li class="page-item" [class.disabled]="current_job_page === totalPages">
+            <a class="page-link" (click)="goToPage(totalPages)" aria-label="Last">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<div id="modalTarget">
+    <ejs-dialog id="modalDialog" #modalDialog (overlayClick)="overlayClick()" [isModal]="true" [target]="target"
+        [width]="width" [visible]="false">
+        <ng-template #header>
+            <span class="section-title" *ngIf="modalType === 1">{{
+                "update_bio" | translate
+                }}</span>
+            <span class="section-title" *ngIf="modalType === 2">{{
+                "update_skills" | translate
+                }}</span>
+            <span class="section-title" *ngIf="modalType === 3">{{
+                "update_education" | translate
+                }}</span>
+            <span class="section-title" *ngIf="modalType === 4">{{
+                "update_basic_info" | translate
+                }}</span>
+
+        </ng-template>
+        <ng-template #content>
+            <div *ngIf="modalType==1">
+                <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">{{"company_name"|translate}}</label>
+                        <input type="text" class="form-control" id="name" name="name" ngModel required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">{{"email"|translate}}</label>
+                        <input type="email" class="form-control" id="email" name="email" ngModel email required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">{{"password"|translate}}</label>
+                        <input type="password" minlength="8" class="form-control" id="password" required name="password"
+                            ngModel>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">{{"location"|translate}}</label>
+                        <input type="text" class="form-control" id="location" name="location" ngModel required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="specializations" class="form-label">{{"specializations"|translate}}</label>
+                        <select class="form-control" id="specializations" name="specializations" ngModel required>
+                            <option *ngFor="let spec of specs" [ngValue]="spec['_id']">{{ spec.name_en }}</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+
+                        <button type="submit" [disabled]="!registerForm.valid"
+                            class="btn btn-secondary">{{'submit'|translate}}</button>
+                    </div>
+                </form>
+            </div>
+            <div *ngIf="modalType==2 && update_company!=undefined">
+                <form #UpdateForm="ngForm" (ngSubmit)="submitUpdateCompany(UpdateForm)">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">{{"company_name"|translate}}</label>
+                        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="update_company.name"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">{{"email"|translate}}</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            [(ngModel)]="update_company.email" email required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">{{"password"|translate}}</label>
+                        <input type="password" minlength="8" class="form-control" id="password" required name="password"
+                            [(ngModel)]="update_company.password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">{{"location"|translate}}</label>
+                        <input type="text" class="form-control" id="location" name="location"
+                            [(ngModel)]="update_company.location" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="specializations" class="form-label">{{"specializations"|translate}}</label>
+                        <select class="form-control" id="specializations" name="specializations"
+                            [(ngModel)]="update_company.type._id" ngModel required>
+                            <option *ngFor="let spec of specs" [ngValue]="spec['_id']">{{ spec.name_en }}</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+
+                        <button type="submit" [disabled]="!UpdateForm.valid"
+                            class="btn btn-secondary">{{'submit'|translate}}</button>
+                    </div>
+                </form>
+            </div>
+
+
+        </ng-template>
+    </ejs-dialog>
+</div>
